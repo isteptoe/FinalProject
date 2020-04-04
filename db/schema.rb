@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_181359) do
+ActiveRecord::Schema.define(version: 2020_04_04_183823) do
 
   create_table "catagories", force: :cascade do |t|
     t.integer "requirement_id", null: false
@@ -76,6 +76,8 @@ ActiveRecord::Schema.define(version: 2020_04_04_181359) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.integer "major_id"
+    t.integer "catalog_id"
+    t.index ["catalog_id"], name: "index_plans_on_catalog_id"
     t.index ["major_id"], name: "index_plans_on_major_id"
   end
 
@@ -111,6 +113,7 @@ ActiveRecord::Schema.define(version: 2020_04_04_181359) do
   add_foreign_key "course_catalogs", "courses"
   add_foreign_key "plan_courses", "courses"
   add_foreign_key "plan_courses", "plans"
+  add_foreign_key "plans", "catalogs"
   add_foreign_key "plans", "majors"
   add_foreign_key "requirements", "catalogs"
   add_foreign_key "requirements", "majors"

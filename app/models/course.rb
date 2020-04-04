@@ -4,5 +4,5 @@ class Course < ApplicationRecord
     has_many :course_catalogs
     has_many :catalogs, through: :course_catalogs
     has_many :catagory_courses
-    has_many :catagorys, through: :catagory_courses
+    has_many :catagories, through: :catagory_courses
 end
