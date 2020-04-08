@@ -23,6 +23,7 @@ user1.email = "cnash@cedarville.edu"
 user1.password = "password"
 user1.password_confirmation = "password"
 user1.major_id = major1.id
+user1.realName = "Cullen Nash"
 user1.save!
 
 user2 = User.new
@@ -31,6 +32,7 @@ user2.email = "isteptoe@cedarville.edu"
 user2.password = "password"
 user2.password_confirmation = "password"
 user2.major_id = major2.id
+user2.realName = "Ian Steptoe"
 user2.save!
 
 user3 = User.new
@@ -39,6 +41,7 @@ user3.email = "djacobs@cedarville.edu"
 user3.password = "password"
 user3.password_confirmation = "password"
 user3.major_id = major2.id
+user3.realName = "Daniel Jacobs"
 user3.save!
 
 catalog1 = Catalog.new
@@ -55,6 +58,8 @@ plan1.name = "Plan 1"
 plan1.user_id = user1.id
 plan1.catalog_id = catalog1.id
 plan1.major_id = major1.id
+plan1.currYear = 2020
+plan1.currTerm = "Spring"
 plan1.save!
 
 plan2 = Plan.new
@@ -62,6 +67,8 @@ plan2.name = "Plan 2"
 plan2.user_id = user1.id
 plan2.catalog_id = catalog1.id
 plan2.major_id = major1.id
+plan2.currYear = 2020
+plan2.currTerm = "Spring"
 plan2.save!
 
 plan3 = Plan.new
@@ -69,6 +76,8 @@ plan3.name = "Plan 3"
 plan3.user_id = user1.id
 plan3.catalog_id = catalog1.id
 plan3.major_id = major2.id
+plan3.currYear = 2020
+plan3.currTerm = "Spring"
 plan3.save!
 
 plan4 = Plan.new
@@ -76,6 +85,8 @@ plan4.name = "Plan 4"
 plan4.user_id = user2.id
 plan4.catalog_id = catalog1.id
 plan4.major_id = major3.id
+plan4.currYear = 2020
+plan4.currTerm = "Spring"
 plan4.save!
 
 plan5 = Plan.new
@@ -83,6 +94,8 @@ plan5.name = "Plan 5"
 plan5.user_id = user2.id
 plan5.catalog_id = catalog1.id
 plan5.major_id = major2.id
+plan5.currYear = 2020
+plan5.currTerm = "Spring"
 plan5.save!
 
 plan6 = Plan.new
@@ -90,6 +103,8 @@ plan6.name = "Plan 6"
 plan6.user_id = user2.id
 plan6.catalog_id = catalog1.id
 plan6.major_id = major3.id
+plan6.currYear = 2020
+plan6.currTerm = "Spring"
 plan6.save!
 
 course1 = Course.new
@@ -228,7 +243,7 @@ course19 = Course.new
 course19.designator = 'EGGN-3110'
 course19.name = 'Ethics'
 course19.description = 'Politicians need to take this course!'
-course19.name = 3.0
+course19.credits = 3.0
 course19.save!
 course24 = Course.new
 course24.designator = 'EGGN-4010'
@@ -240,7 +255,7 @@ course25 = Course.new
 course25.designator = 'MATH-1710'
 course25.name = 'Calc I'
 course25.description = 'A weedout course'
-course25.name = 3.0
+course25.credits = 3.0
 course25.save!
 course26 = Course.new
 course26.designator = 'MATH-1720'
@@ -765,69 +780,168 @@ requirement3.save!
 catagory1 = Catagory.new
 catagory1.requirement_id = requirement1.id
 catagory1.catagory = "Core"
+catagory1.save!
 
 catagory2 = Catagory.new
 catagory2.requirement_id = requirement1.id
 catagory2.catagory = "Electives"
+catagory2.save!
 
 catagory3 = Catagory.new
 catagory3.requirement_id = requirement1.id
 catagory3.catagory = "Cognates"
+catagory3.save!
 
 catagory4 = Catagory.new
 catagory4.requirement_id = requirement2.id
 catagory4.catagory = "Core"
+catagory4.save!
 
 catagory5 = Catagory.new
 catagory5.requirement_id = requirement2.id
 catagory5.catagory = "Electives"
+catagory5.save!
 
 catagory6 = Catagory.new
 catagory6.requirement_id = requirement2.id
 catagory6.catagory = "Cognates"
+catagory6.save!
 
 catagory7 = Catagory.new
 catagory7.requirement_id = requirement3.id
 catagory7.catagory = "Core"
+catagory7.save!
 
 catagory8 = Catagory.new
 catagory8.requirement_id = requirement3.id
 catagory8.catagory = "Electives"
+catagory8.save!
 
 catagory9 = Catagory.new
 catagory9.requirement_id = requirement3.id
 catagory9.catagory = "Cognates"
+catagory9.save!
 
-CatagoryCourse.create(course_id: course3.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course4.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course5.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course6.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course7.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course9.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course33.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course10.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course11.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course16.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course17.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course18.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course20.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course22.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course23.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course24.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course27.id, catagory_id: catagory1.id)
-CatagoryCourse.create(course_id: course8.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course12.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course13.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course14.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course15.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course19.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course21.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course29.id, catagory_id: catagory2.id)
-CatagoryCourse.create(course_id: course2.id, catagory_id: catagory3.id)
-CatagoryCourse.create(course_id: course25.id, catagory_id: catagory3.id)
-CatagoryCourse.create(course_id: course26.id, catagory_id: catagory3.id)
-CatagoryCourse.create(course_id: course31.id, catagory_id: catagory3.id)
-CatagoryCourse.create(course_id: course32.id, catagory_id: catagory3.id)
+cc1 = CatagoryCourse.new
+cc1.course_id = course3.id
+cc1.catagory_id = catagory1.id
+cc1.save!
+cc2 = CatagoryCourse.new
+cc2.course_id = course4.id
+cc2.catagory_id = catagory1.id
+cc2.save!
+cc3 = CatagoryCourse.new
+cc3.course_id = course5.id
+cc3.catagory_id = catagory1.id
+cc3.save!
+cc4 = CatagoryCourse.new
+cc4.course_id = course6.id
+cc4.catagory_id = catagory1.id
+cc4.save!
+cc5 = CatagoryCourse.new
+cc5.course_id = course7.id
+cc5.catagory_id = catagory1.id
+cc5.save!
+cc6 = CatagoryCourse.new
+cc6.course_id = course9.id
+cc6.catagory_id = catagory1.id
+cc6.save!
+cc7 = CatagoryCourse.new
+cc7.course_id = course33.id
+cc7.catagory_id = catagory1.id
+cc7.save!
+cc8 = CatagoryCourse.new
+cc8.course_id = course10.id
+cc8.catagory_id = catagory1.id
+cc8.save!
+cc9 = CatagoryCourse.new
+cc9.course_id = course11.id
+cc9.catagory_id = catagory1.id
+cc9.save!
+cc10 = CatagoryCourse.new
+cc10.course_id = course16.id
+cc10.catagory_id = catagory1.id
+cc10.save!
+cc11 = CatagoryCourse.new
+cc11.course_id = course17.id
+cc11.catagory_id = catagory1.id
+cc11.save!
+cc12 = CatagoryCourse.new
+cc12.course_id = course18.id
+cc12.catagory_id = catagory1.id
+cc12.save!
+cc13 = CatagoryCourse.new
+cc13.course_id = course20.id
+cc13.catagory_id = catagory1.id
+cc13.save!
+cc14 = CatagoryCourse.new
+cc14.course_id = course22.id
+cc14.catagory_id = catagory1.id
+cc14.save!
+cc15 = CatagoryCourse.new
+cc15.course_id = course23.id
+cc15.catagory_id = catagory1.id
+cc15.save!
+cc16 = CatagoryCourse.new
+cc16.course_id = course24.id
+cc16.catagory_id = catagory1.id
+cc16.save!
+cc17 = CatagoryCourse.new
+cc17.course_id = course27.id
+cc17.catagory_id = catagory1.id
+cc17.save!
+cc18 = CatagoryCourse.new
+cc18.course_id = course8.id
+cc18.catagory_id = catagory2.id
+cc18.save!
+cc19 = CatagoryCourse.new
+cc19.course_id = course12.id
+cc19.catagory_id = catagory2.id
+cc19.save!
+cc20 = CatagoryCourse.new
+cc20.course_id = course13.id
+cc20.catagory_id = catagory2.id
+cc20.save!
+cc21 = CatagoryCourse.new
+cc21.course_id = course14.id
+cc21.catagory_id = catagory2.id
+cc21.save!
+cc22 = CatagoryCourse.new
+cc22.course_id = course15.id
+cc22.catagory_id = catagory2.id
+cc22.save!
+cc23 = CatagoryCourse.new
+cc23.course_id = course19.id
+cc23.catagory_id = catagory2.id
+cc23.save!
+cc24 = CatagoryCourse.new
+cc24.course_id = course21.id
+cc24.catagory_id = catagory2.id
+cc24.save!
+cc25 = CatagoryCourse.new
+cc25.course_id = course29.id
+cc25.catagory_id = catagory2.id
+cc25.save!
+cc26 = CatagoryCourse.new
+cc26.course_id = course2.id
+cc26.catagory_id = catagory3.id
+cc26.save!
+cc27 = CatagoryCourse.new
+cc27.course_id = course25.id
+cc27.catagory_id = catagory3.id
+cc27.save!
+cc28 = CatagoryCourse.new
+cc28.course_id = course26.id
+cc28.catagory_id = catagory3.id
+cc28.save!
+cc29 = CatagoryCourse.new
+cc29.course_id = course31.id
+cc29.catagory_id = catagory3.id
+cc29.save!
+cc30 = CatagoryCourse.new
+cc30.course_id = course32.id
+cc30.catagory_id = catagory3.id
+cc30.save!
 
 #alternate syntax
 #Plan.create(user_id: user1.id, name: "Plan1")

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ape</title>
+    <title>Academic Planning - Cullen Nash and Ian Steptoe</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -9,8 +9,7 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-      <%= render 'layouts/header' %>
+  <body class="flex-col" ondragover="dragOverOther(event)">
     <%= yield %>
   </body>
 </html>

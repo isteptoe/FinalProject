@@ -5,3 +5,448 @@
 header {
     background-color: #b0c4de;
 }
+html {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: perpetua;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    background-color: #EEEBE7;
+}
+
+a {
+    text-decoration: none;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    border: 1px solid #50423d;
+}
+
+li:hover {
+    cursor: pointer;
+    background-color: #b0b4c3;
+}
+
+ul {
+    margin: 5px 0;
+    padding-left: 15px;
+}
+
+input {
+    font-family: perpetua;
+    background-color: #EEEBE7;
+    font-size: 17px;
+}
+
+select {
+    margin: 5px;
+    font-family: perpetua;
+    font-size: 16px;
+    width: 150px;
+    background-color: #EEEBE7;
+}
+
+table.dataTable tbody tr {
+    font-family: perpetua;
+    cursor: pointer;
+    background-color: #C8CCDA;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #b0b4c3;
+}
+
+table.dataTable tbody th, table.dataTable tbody td, table.dataTable thead th {
+        padding: 4px 10px; /* e.g. change 8x to 4px here */
+}
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
+      overflow-y: scroll !important;
+  }
+
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border: none;
+}
+
+.dataTables_wrapper .dataTables_info{
+    padding-top: 0;
+}
+
+.margin {
+    margin: 5px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-space {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.header {
+    width: 100vw;
+    height: 50px;
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+    white-space: nowrap;
+}
+
+.left-header {
+    font-size: 40px;
+    height: 50px;
+    margin-left: 10px;
+}
+
+.top-info {
+    margin: 5px;
+    font-size: 17px;
+    height: 50px;
+}
+
+.info-titles {
+    margin: 5px;
+}
+
+.info-pid {
+    margin: 5px;
+}
+
+.upper {
+    margin: 0px;
+    flex: 1;
+    min-height: 50px;
+    overflow: hidden;
+}
+
+.lower {
+    height: 200px;
+    margin: 0px;
+}
+
+.upper-left {
+    min-width: 225px;
+    max-width: 225px;
+    margin: 10px 2.5px 2.5px 5px;
+    background-color: #C9BBAE;
+}
+
+.upper-right {
+    flex: 1;
+    margin: 10px 5px 2.5px 2.5px;
+    background-color: #C9BBAE;
+}
+
+.lower-left {
+    min-width: 225px;
+    margin: 2.5px 2.5px 5px 5px;
+    background-color: #C9BBAE;
+    align-items: center;
+}
+
+.lower-right {
+    flex: 1;
+    min-width: 400px;
+    margin: 2.5px 5px 5px 2.5px;
+    background-color: #C9BBAE;
+}
+
+.quad-header {
+    width: 100%;
+    font-size: 30px;
+    background-color: #8d7361;
+    height: 35px;
+    border-bottom: 1px solid #50423d;
+}
+
+.quad-content {
+    margin: 5px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.dropbtn {
+  background-color: #8b8da0;
+  color: black;
+  padding: 10px;
+  font-family: perpetua;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #9a9cad;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.drop-down-header {
+    border: 1px solid #50423d;
+    padding: 2px;
+    margin: 5px;
+    background-color: #8b8da0;
+}
+
+.drop-down-header:hover {
+    cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+.spacer {
+    flex: 1;
+    margin: 5px;
+}
+.hours {
+    margin: 5px;
+    text-align: right;
+    flex: 1;
+    white-space: nowrap;
+}
+
+.class-names {
+    font-size: 15px;
+}
+
+.grad-error {
+    background-color: red;
+    border: 2px solid darkred;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.scroll {
+    overflow-y: auto;
+    margin: 5px;
+    flex: 1;
+}
+
+.course-title {
+    font-size: 25px;
+    margin: 5px;
+}
+
+.course-heading {
+    margin: 5px;
+}
+
+.year {
+    justify-content: space-around;
+}
+
+.semester {
+    flex: 1;
+    border: 1px solid #50423d;
+    padding: 5px;
+    margin: 5px;
+    min-width: 100px;
+    background-color: #8b8da0;
+}
+
+.past {
+    background-color: #C8CCDA;
+}
+
+.semester-header {
+    font-size: 18px;
+}
+
+.nav-button {
+    border: 1px solid #50423d;
+    width: 50px;
+    height: 18px;
+    margin: 3px;
+    background-color: #8b8da0;
+    font-family: perpetua;
+    font-size: 15px;
+}
+
+.submit-button:hover {
+    cursor: pointer;
+    background-color: #9a9cad;
+}
+.submit-button {
+    border: 1px solid #50423d;
+    width: 200px;
+    height: 40px;
+    margin: 10px;
+    background-color: #8b8da0;
+    font-family: perpetua;
+    font-size: 20px;
+}
+
+.nav-button:hover {
+    cursor: pointer;
+    background-color: #9a9cad;
+}
+
+.form-text {
+    background-color: #eeebe7;
+    font-family: perpetua;
+    font-size: 16px;
+    margin: 5px;
+    border: 2px solid black;
+}
+
+.selectContainer{
+    align-items: center;
+    font-family: perpetua;
+    font-size: 16px;
+    justify-content: space-between;
+}
+
+#kbb {
+    width: 90%;
+    align-items: left;
+    justify-content: center;
+}
+
+#accordion {
+    font-family: perpetua;
+
+}
+
+#course-search {
+    background-color: #eeebe7;
+    font-family: perpetua;
+}
+
+.ui-accordion .ui-accordion-content {
+    padding: 5px;
+}
+
+.ui-widget-content {
+    background-color: #EEEBE7;
+
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border: 1px solid #50423d;
+    background: #c8ccda;
+    font-weight: normal;
+    color: #454545;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #50423d;
+    background: #8b8da0;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+.upper-left .quad-content {
+    overflow-y: hidden;
+}
+
+.ticRow {
+    min-height: 40px;
+    max-height: 40px;
+}
+
+.ticCol {
+    min-width: 40px;
+    max-width: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    border-color: black;
+    border-style: solid;
+}
+
+.ticCol:hover{
+    cursor: pointer;
+}
+
+.filledIn:hover{
+    cursor: auto;
+}
+
+.winningSquares {
+    font-weight: bold;
+}
+
+#ul {
+    border-width: 0px 1px 1px 0px;
+}
+
+#uc {
+    border-width: 0px 1px 1px 1px;
+}
+
+#ur {
+    border-width: 0px 0px 1px 1px;
+}
+
+#cl {
+    border-width: 1px 1px 1px 0px;
+}
+
+#cc {
+    border-width: 1px 1px 1px 1px;
+}
+
+#cr {
+    border-width: 1px 0px 1px 1px;
+}
+
+#ll {
+    border-width: 1px 1px 0px 0px;
+}
+
+#lc {
+    border-width: 1px 1px 0px 1px;
+}
+
+#lr {
+    border-width: 1px 0px 0px 1px;
+}
