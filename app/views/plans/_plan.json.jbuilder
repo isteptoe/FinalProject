@@ -26,7 +26,7 @@ json.catalog do
             json.credits catCourse.course.credits.to_f
         end}
 
-    end
+    end 
 end
 
 json.requirements do
