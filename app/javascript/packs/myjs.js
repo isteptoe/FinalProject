@@ -74,6 +74,7 @@ window.makePlan = function(){
                 "scrollCollapse": false
             });
             $("#table tr").attr("ondragstart", "dragFromCatalog(event)").attr("draggable", "true");
+            $(".top").addClass("flex-row flex-space")
             console.log("getting reqs");
             getReqs();
         }

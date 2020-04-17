@@ -24,7 +24,8 @@ json.catalog do
             json.name catCourse.course.name
             json.description catCourse.course.description
             json.credits catCourse.course.credits.to_f
-        end}
+
+        end }
 
     end
 end
