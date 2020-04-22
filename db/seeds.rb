@@ -49,7 +49,7 @@ catalog1.catalogYear = 2018
 catalog1.save!
 
 catalog2 = Catalog.new
-catalog2.catalogYear = 2018
+catalog2.catalogYear = 2019
 catalog2.save!
 
 

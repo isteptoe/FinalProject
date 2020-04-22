@@ -14,6 +14,10 @@
   <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
+    <%= form.label :major %>
+    <%= form.collection_select :major_id, Major.order(:major),:id, :major, include_blank: true %>
+    <%= form.label :catalog_year %>
+    <%= form.collection_select :catalog_id, Catalog.order(:catalogYear),:id, :catalogYear, include_blank: true %>
   </div>
 
   <div class="actions">
