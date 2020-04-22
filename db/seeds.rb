@@ -951,6 +951,211 @@ cc30 = CatagoryCourse.new
 cc30.course_id = course32.id
 cc30.catagory_id = catagory3.id
 cc30.save!
+cc31 = CatagoryCourse.new
+cc31.course_id = course3.id
+cc31.catagory_id = catagory4.id
+cc31.save!
+cc32 = CatagoryCourse.new
+cc32.course_id = course4.id
+cc32.catagory_id = catagory4.id
+cc32.save!
+cc33 = CatagoryCourse.new
+cc33.course_id = course5.id
+cc33.catagory_id = catagory4.id
+cc33.save!
+cc34 = CatagoryCourse.new
+cc34.course_id = course6.id
+cc34.catagory_id = catagory4.id
+cc34.save!
+cc35 = CatagoryCourse.new
+cc35.course_id = course7.id
+cc35.catagory_id = catagory4.id
+cc35.save!
+cc36 = CatagoryCourse.new
+cc36.course_id = course9.id
+cc36.catagory_id = catagory4.id
+cc36.save!
+cc37 = CatagoryCourse.new
+cc37.course_id = course33.id
+cc37.catagory_id = catagory4.id
+cc37.save!
+cc38 = CatagoryCourse.new
+cc38.course_id = course10.id
+cc38.catagory_id = catagory4.id
+cc38.save!
+cc39 = CatagoryCourse.new
+cc39.course_id = course11.id
+cc39.catagory_id = catagory4.id
+cc39.save!
+cc40 = CatagoryCourse.new
+cc40.course_id = course16.id
+cc40.catagory_id = catagory4.id
+cc40.save!
+cc41 = CatagoryCourse.new
+cc41.course_id = course17.id
+cc41.catagory_id = catagory4.id
+cc41.save!
+cc42 = CatagoryCourse.new
+cc42.course_id = course18.id
+cc42.catagory_id = catagory4.id
+cc42.save!
+cc43 = CatagoryCourse.new
+cc43.course_id = course20.id
+cc43.catagory_id = catagory4.id
+cc43.save!
+cc44 = CatagoryCourse.new
+cc44.course_id = course22.id
+cc44.catagory_id = catagory4.id
+cc44.save!
+cc45 = CatagoryCourse.new
+cc45.course_id = course23.id
+cc45.catagory_id = catagory4.id
+cc45.save!
+cc46 = CatagoryCourse.new
+cc46.course_id = course24.id
+cc46.catagory_id = catagory4.id
+cc46.save!
+cc47 = CatagoryCourse.new
+cc47.course_id = course27.id
+cc47.catagory_id = catagory4.id
+cc47.save!
+cc48 = CatagoryCourse.new
+cc48.course_id = course8.id
+cc48.catagory_id = catagory5.id
+cc48.save!
+cc49 = CatagoryCourse.new
+cc49.course_id = course12.id
+cc49.catagory_id = catagory5.id
+cc49.save!
+cc50 = CatagoryCourse.new
+cc50.course_id = course13.id
+cc50.catagory_id = catagory5.id
+cc50.save!
+cc51 = CatagoryCourse.new
+cc51.course_id = course14.id
+cc51.catagory_id = catagory5.id
+cc51.save!
+cc52 = CatagoryCourse.new
+cc52.course_id = course15.id
+cc52.catagory_id = catagory5.id
+cc52.save!
+cc53 = CatagoryCourse.new
+cc53.course_id = course19.id
+cc53.catagory_id = catagory5.id
+cc53.save!
+cc54 = CatagoryCourse.new
+cc54.course_id = course21.id
+cc54.catagory_id = catagory5.id
+cc54.save!
+cc55 = CatagoryCourse.new
+cc55.course_id = course29.id
+cc55.catagory_id = catagory5.id
+cc55.save!
+cc56 = CatagoryCourse.new
+cc56.course_id = course2.id
+cc56.catagory_id = catagory6.id
+cc56.save!
+cc57 = CatagoryCourse.new
+cc57.course_id = course25.id
+cc57.catagory_id = catagory6.id
+cc57.save!
+cc58 = CatagoryCourse.new
+cc58.course_id = course26.id
+cc58.catagory_id = catagory6.id
+cc58.save!
+cc59 = CatagoryCourse.new
+cc59.course_id = course31.id
+cc59.catagory_id = catagory6.id
+cc59.save!
+cc60 = CatagoryCourse.new
+cc60.course_id = course32.id
+cc60.catagory_id = catagory6.id
+cc60.save!
+cc61 = CatagoryCourse.new
+cc61.course_id = course3.id
+cc61.catagory_id = catagory7.id
+cc61.save!
+cc62 = CatagoryCourse.new
+cc62.course_id = course4.id
+cc62.catagory_id = catagory7.id
+cc62.save!
+cc63 = CatagoryCourse.new
+cc63.course_id = course5.id
+cc63.catagory_id = catagory7.id
+cc63.save!
+cc64 = CatagoryCourse.new
+cc64.course_id = course6.id
+cc64.catagory_id = catagory7.id
+cc64.save!
+cc70 = CatagoryCourse.new
+cc70.course_id = course16.id
+cc70.catagory_id = catagory7.id
+cc70.save!
+cc71 = CatagoryCourse.new
+cc71.course_id = course17.id
+cc71.catagory_id = catagory7.id
+cc71.save!
+cc72 = CatagoryCourse.new
+cc72.course_id = course18.id
+cc72.catagory_id = catagory7.id
+cc72.save!
+cc73 = CatagoryCourse.new
+cc73.course_id = course20.id
+cc73.catagory_id = catagory7.id
+cc73.save!
+cc74 = CatagoryCourse.new
+cc74.course_id = course22.id
+cc74.catagory_id = catagory7.id
+cc74.save!
+cc75 = CatagoryCourse.new
+cc75.course_id = course23.id
+cc75.catagory_id = catagory7.id
+cc75.save!
+cc76 = CatagoryCourse.new
+cc76.course_id = course24.id
+cc76.catagory_id = catagory7.id
+cc76.save!
+cc77 = CatagoryCourse.new
+cc77.course_id = course27.id
+cc77.catagory_id = catagory7.id
+cc77.save!
+cc78 = CatagoryCourse.new
+cc78.course_id = course8.id
+cc78.catagory_id = catagory8.id
+cc78.save!
+cc79 = CatagoryCourse.new
+cc79.course_id = course12.id
+cc79.catagory_id = catagory8.id
+cc79.save!
+cc80 = CatagoryCourse.new
+cc80.course_id = course13.id
+cc80.catagory_id = catagory8.id
+cc80.save!
+cc81 = CatagoryCourse.new
+cc81.course_id = course14.id
+cc81.catagory_id = catagory8.id
+cc81.save!
+cc82 = CatagoryCourse.new
+cc82.course_id = course15.id
+cc82.catagory_id = catagory8.id
+cc82.save!
+cc86 = CatagoryCourse.new
+cc86.course_id = course2.id
+cc86.catagory_id = catagory9.id
+cc86.save!
+cc87 = CatagoryCourse.new
+cc87.course_id = course25.id
+cc87.catagory_id = catagory9.id
+cc87.save!
+cc88 = CatagoryCourse.new
+cc88.course_id = course26.id
+cc88.catagory_id = catagory9.id
+cc88.save!
+cc89 = CatagoryCourse.new
+cc89.course_id = course31.id
+cc89.catagory_id = catagory9.id
+cc89.save!
+
 
 #alternate syntax
 #Plan.create(user_id: user1.id, name: "Plan1")
