@@ -35,10 +35,10 @@ window.getReqs = function(location){
         $('#accordion').accordion({
             heightStyle: "fill"
         });
-        $("h3").addClass("flex-row").addClass("flex-space")
-        $("#ui-id-1").append("<div id=\"coreHeader\"></div>")
-        $("#ui-id-3").append("<div id=\"electiveHeader\"></div>")
-        $("#ui-id-5").append("<div id=\"cognateHeader\"></div>")
+        $("h3").addClass("flex-row").addClass("flex-space");
+        $("#ui-id-1").append("<div id=\"coreHeader\"></div>");
+        $("#ui-id-3").append("<div id=\"electiveHeader\"></div>");
+        $("#ui-id-5").append("<div id=\"cognateHeader\"></div>");
         let count = 0;
         let requirementNum = 0;
         for(let i in req.categories){
