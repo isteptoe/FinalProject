@@ -210,7 +210,7 @@ window.dragFromPlan = function(event){
     //remove from current semester and plan
     $.get("/~steptoe/TermProject/php/functions.php", {modify: "delete", user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function(){
         makePlan(location.href);
-    })
+    });
 };
 
 window.dragFromRequirements = function(event) {
@@ -256,7 +256,7 @@ window.dropOnPlan = function(event) {
     // dropping on semester
     $.get("/~steptoe/TermProject/php/functions.php", {modify: "delete", user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function(){
         makePlan(location.href);
-    })
+    });
 };
 
 window.dragOverOther = function(event){

@@ -44,6 +44,15 @@ user3.major_id = major2.id
 user3.realName = "Daniel Jacobs"
 user3.save!
 
+user4 = User.new
+user4.login = "admin"
+user4.email = "admin@cedarville.edu"
+user4.password = "password"
+user4.password_confirmation = "password"
+user4.major_id = major2.id
+user4.realName = "Faculty"
+user4.save!
+
 catalog1 = Catalog.new
 catalog1.catalogYear = 2018
 catalog1.save!
