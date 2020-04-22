@@ -44,7 +44,7 @@ window.makePlan = function(location){
         plan = combined.plan;
         catalog = combined.catalog;
         if(first){
-            //first = false;
+            first = false;
             let courses = [];
             for(let i in catalog.courses) {
                 courses.push(catalog.courses[i]);
@@ -208,9 +208,9 @@ window.dragFromPlan = function(event){
     courseName = event.target.innerHTML.split(" ")[0];
 
     //remove from current semester and plan
-    $.get("/~steptoe/TermProject/php/functions.php", {modify: "delete", user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function(){
+    $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function() {
         makePlan(location.href);
-    });
+    })
 };
 
 window.dragFromRequirements = function(event) {
@@ -225,8 +225,6 @@ window.dragFromCatalog = function(event) {
     //drag from catalog
     makeDrag(event.target.cells[0].innerHTML + " " + event.target.cells[1].innerHTML);
     courseName = event.target.cells[0].innerHTML;
-
-
 };
 
 window.dragOver = function(event){
@@ -254,9 +252,10 @@ window.dropOnPlan = function(event) {
         }
     }
     // dropping on semester
-    $.get("/~steptoe/TermProject/php/functions.php", {modify: "delete", user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function(){
+    $.post("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName, year: year, semester: semester}, function(){
         makePlan(location.href);
     });
+
 };
 
 window.dragOverOther = function(event){

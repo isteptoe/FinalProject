@@ -32,6 +32,8 @@ class PlansController < ApplicationController
   def create
     @plan = Plan.new(plan_params)
     @plan.user_id = current_user.id
+    @plan.currYear = 2020
+    @plan.currTerm = "Spring"
 
     respond_to do |format|
       if @plan.save
