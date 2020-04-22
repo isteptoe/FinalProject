@@ -71,6 +71,14 @@ table.dataTable tbody th, table.dataTable tbody td, table.dataTable thead th {
         padding: 4px 10px; /* e.g. change 8x to 4px here */
 }
 
+.inPlan{
+    color: green;
+}
+
+.notInPlan{
+    color:red;
+}
+
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
       overflow-y: scroll !important;
   }
@@ -461,4 +469,11 @@ table.dataTable tbody th, table.dataTable tbody td, table.dataTable thead th {
 
 #lr {
     border-width: 1px 0px 0px 1px;
+}
+
+.ui-accordion .ui-accordion-header {
+    display: flex;
+}
+.missingClass{
+    color: red;
 }

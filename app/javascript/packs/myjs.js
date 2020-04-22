@@ -6,6 +6,7 @@ var courseName = "";
 var first = true;
 var turn = "X";
 var win = [448, 56, 7, 292, 146, 73, 273, 84];
+var currentCourses = [];
 
 
 $(window).resize(function () {
@@ -22,7 +23,11 @@ window.getReqs = function(location){
         for(let i in req.categories){
             html += "<h3>" + i + "</h3><div><ul>";
             for(let j in req.categories[i].courses){
-                html += "<li draggable=\"true\" ondragstart=\"dragFromRequirements(event)\">" + req.categories[i].courses[j] + " - " + catalog.courses[req.categories[i].courses[j]].name + "</li>";
+                if(currentCourses.indexOf(req.categories[i].courses[j]) != -1){
+                    html += "<li class=\"inPlan\" draggable=\"true\" ondragstart=\"dragFromRequirements(event)\">" + req.categories[i].courses[j] + " - " + catalog.courses[req.categories[i].courses[j]].name + "</li>";
+                }else{
+                    html += "<li class=\"notInPlan\" draggable=\"true\" ondragstart=\"dragFromRequirements(event)\">" + req.categories[i].courses[j] + " - " + catalog.courses[req.categories[i].courses[j]].name + "</li>";
+                }
             }
             html += "</ul></div>";
         }
@@ -30,6 +35,40 @@ window.getReqs = function(location){
         $('#accordion').accordion({
             heightStyle: "fill"
         });
+        $("h3").addClass("flex-row").addClass("flex-space")
+        $("#ui-id-1").append("<div id=\"coreHeader\"></div>")
+        $("#ui-id-3").append("<div id=\"electiveHeader\"></div>")
+        $("#ui-id-5").append("<div id=\"cognateHeader\"></div>")
+        let count = 0;
+        let requirementNum = 0;
+        for(let i in req.categories){
+            for(let j in req.categories[i].courses){
+                if(currentCourses.indexOf(req.categories[i].courses[j]) == -1){
+                    count++;
+                }
+            }
+            if(requirementNum == 0){
+                if(count != 0){
+                    $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                }else{
+                    $("#coreHeader").html("");
+                }
+            }else if(requirementNum == 1){
+                if(count != 0){
+                    $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                }else{
+                    $("#electiveHeader").html("");
+                }
+            }else if(requirementNum == 2){
+                if(count != 0){
+                    $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                }else{
+                    $("#cognateHeader").html("");
+                }
+            }
+            count = 0;
+            requirementNum++;
+        }
     });
 };
 
@@ -37,12 +76,15 @@ window.getReqs = function(location){
 window.makePlan = function(location){
     console.log(location);
 
-    console.log("hi");
     $.get(location + ".json").done(function(data){
         console.log(data);
         let combined  = data;
         plan = combined.plan;
         catalog = combined.catalog;
+        currentCourses = [];
+        for (let c in plan.courses){
+            currentCourses.push(c);
+        }
         if(first){
             first = false;
             let courses = [];
@@ -66,10 +108,42 @@ window.makePlan = function(location){
             $(".top").addClass("flex-row flex-space");
             console.log("getting reqs");
             getReqs(location);
+        }else{
+            let count = 0;
+            let requirementNum = 0;
+            for(let i in req.categories){
+                for(let j in req.categories[i].courses){
+                    if(currentCourses.indexOf(req.categories[i].courses[j]) == -1){
+                        count++;
+                    }
+                }
+                if(requirementNum == 0){
+                    if(count != 0){
+                        $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                    }else{
+                        $("#coreHeader").html("");
+                    }
+                }else if(requirementNum == 1){
+                    if(count != 0){
+                        $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                    }else{
+                        $("#electiveHeader").html("");
+                    }
+                }else if(requirementNum == 2){
+                    if(count != 0){
+                        $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                    }else{
+                        $("#cognateHeader").html("");
+                    }
+                }
+                count = 0;
+                requirementNum++;
+            }
         }
         currPlan = new Plan(plan.name, catalog.year, plan.major, plan.student, plan.currYear, plan.currTerm, plan.realName);
 
         for (let c in plan.courses){
+            currentCourses.push(c);
             currPlan.addCourse(plan.courses[c].id, catalog.courses[c].name, plan.courses[c].term, plan.courses[c].year, catalog.courses[c].credits);
         }
         currPlan.convertPlan();
@@ -206,11 +280,15 @@ window.dragFromPlan = function(event){
     // dragging from plan to somewhere
     makeDrag(event.target.innerHTML);
     courseName = event.target.innerHTML.split(" ")[0];
-
+    $(".inPlan").each(function() {
+        if(this.innerText.split(" ")[0] == event.target.innerHTML.split(" ")[0]){
+            this.className = "notInPlan";
+        }
+    });
     //remove from current semester and plan
     $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function() {
         makePlan(location.href);
-    })
+    });
 };
 
 window.dragFromRequirements = function(event) {
@@ -252,6 +330,12 @@ window.dropOnPlan = function(event) {
         }
     }
     // dropping on semester
+    $(".notInPlan").each(function() {
+        if(this.innerText.split(" ")[0] == courseName){
+            this.className = "inPlan";
+        }
+    });
+
     $.post("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName, year: year, semester: semester}, function(){
         makePlan(location.href);
     });
