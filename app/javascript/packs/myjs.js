@@ -108,7 +108,7 @@ window.makePlan = function(location){
             $(".top").addClass("flex-row flex-space");
             console.log("getting reqs");
             getReqs(location);
-        }else{
+        } else{
             let count = 0;
             let requirementNum = 0;
             for(let i in req.categories){
@@ -140,16 +140,46 @@ window.makePlan = function(location){
                 requirementNum++;
             }
         }
-        currPlan = new Plan(plan.name, catalog.year, plan.major, plan.student, plan.currYear, plan.currTerm, plan.realName);
-
-        for (let c in plan.courses){
-            currentCourses.push(c);
-            currPlan.addCourse(plan.courses[c].id, catalog.courses[c].name, plan.courses[c].term, plan.courses[c].year, catalog.courses[c].credits);
-        }
         currPlan.convertPlan();
         $('#planArea').html(currPlan.makeHTML());
         $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
     });
+};
+
+window.updatePlan = function(){
+    let count = 0;
+    let requirementNum = 0;
+    for(let i in req.categories){
+        for(let j in req.categories[i].courses){
+            if(currentCourses.indexOf(req.categories[i].courses[j]) == -1){
+                count++;
+            }
+        }
+        if(requirementNum == 0){
+            if(count != 0){
+                $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+            }else{
+                $("#coreHeader").html("");
+            }
+        }else if(requirementNum == 1){
+            if(count != 0){
+                $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+            }else{
+                $("#electiveHeader").html("");
+            }
+        }else if(requirementNum == 2){
+            if(count != 0){
+                $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+            }else{
+                $("#cognateHeader").html("");
+            }
+        }
+        count = 0;
+        requirementNum++;
+    }
+    currPlan.convertPlan();
+    $('#planArea').html(currPlan.makeHTML());
+    $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
 };
 
 
@@ -171,6 +201,9 @@ class Plan {
         } else{
             this.courses[id] = new Course(id, name, term, year, credits);
         }
+    }
+    removeCourse(id){
+
     }
     convertPlan(){
         for (var i = 0; i < 4; i++) {
@@ -285,10 +318,15 @@ window.dragFromPlan = function(event){
             this.className = "notInPlan";
         }
     });
+
     //remove from current semester and plan
     $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function() {
-        makePlan(location.href);
+        //makePlan(location.href);
     });
+    //updateCurrPLan
+
+
+    updatePlan();
 };
 
 window.dragFromRequirements = function(event) {
@@ -318,6 +356,10 @@ window.dragOver = function(event){
 };
 
 window.dropOnPlan = function(event) {
+    // if(originalDrag != null){
+    //     originalDrag.remove();
+    //     originalDrag = null;
+    // }
     event.preventDefault();
     let semester = "";
     let year = 0;
@@ -326,6 +368,11 @@ window.dropOnPlan = function(event) {
             event.path[i].style.background = "";
             semester = event.path[i].children[0].children[0].innerText.split(" ")[0];
             year = parseInt(event.path[i].children[0].children[0].innerText.split(" ")[1]);
+
+            //put course in plan
+            // let original = event.path[i].children[1].innerHTML;
+            // let newCourse = "<li draggable=\"true\" ondragstart=\"dragFromPlan(event)\">" + courseName + " " + catalog.courses[courseName].name + "</li>";
+            // event.path[i].children[1].innerHTML = original.substr(0, original.length - 5) + newCourse + "</ul>";
             break;
         }
     }
@@ -337,8 +384,13 @@ window.dropOnPlan = function(event) {
     });
 
     $.post("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName, year: year, semester: semester}, function(){
-        makePlan(location.href);
+        //makePlan(location.href);
     });
+    //updateCurrPLan
+    currPlan.addCourse(courseName, catalog.courses[courseName].name, semester, year, catalog.courses[courseName].credits);
+    updatePlan();
+
+
 
 };
 
