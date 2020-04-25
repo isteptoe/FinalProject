@@ -4,7 +4,7 @@ class PlansController < ApplicationController
   # GET /plans
   # GET /plans.json
   def index
-    if current_user.realName == "Faculty"
+    if current_user.realName == "Faculty" || current_user.realName == "Admin"
         @plans = Plan.all
     else
         @plans = Plan.where(user_id: current_user.id)
@@ -14,6 +14,9 @@ class PlansController < ApplicationController
   # GET /plans/1
   # GET /plans/1.json
   def show
+      if @plan.user_id != current_user.id && current_user.realName != "Faculty" && current_user.realName != "Admin"
+          redirect_to plans_path
+      end
       @courses = Course.all
       @plans = Plan.where(user_id: current_user.id)
   end
