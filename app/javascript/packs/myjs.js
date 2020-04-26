@@ -1,7 +1,3 @@
-
-var request;
-var courseRequest;
-var reqRequest;
 var catalog = false;
 var plan = false;
 var currPlan = false;
@@ -10,25 +6,29 @@ var courseName = "";
 var first = true;
 var turn = "X";
 var win = [448, 56, 7, 292, 146, 73, 273, 84];
-var planRequest;
-var planRefresh;
+var currentCourses = [];
+var planEvent = null;
+
 
 $(window).resize(function () {
      $('#accordion').accordion("refresh");
 });
 
 
-window.getReqs = function(){
-    console.log("in getting reqs")
-    $.get("/plans/1.json").done(function(data){
-        console.log(data)
+window.getReqs = function(location){
+    $.get(location + ".json").done(function(data){
+        console.log(data);
         req = data.requirements;
         console.log(req);
         let html = "";
         for(let i in req.categories){
             html += "<h3>" + i + "</h3><div><ul>";
             for(let j in req.categories[i].courses){
-                html += "<li draggable=\"true\" ondragstart=\"dragFromRequirements(event)\">" + req.categories[i].courses[j] + " - " + catalog.courses[req.categories[i].courses[j]].name + "</li>";
+                if(currentCourses.indexOf(req.categories[i].courses[j]) != -1){
+                    html += "<li class=\"inPlan\" draggable=\"true\" ondragstart=\"dragFromRequirements(event)\">" + req.categories[i].courses[j] + " - " + catalog.courses[req.categories[i].courses[j]].name + "</li>";
+                }else{
+                    html += "<li class=\"notInPlan\" draggable=\"true\" ondragstart=\"dragFromRequirements(event)\">" + req.categories[i].courses[j] + " - " + catalog.courses[req.categories[i].courses[j]].name + "</li>";
+                }
             }
             html += "</ul></div>";
         }
@@ -36,24 +36,56 @@ window.getReqs = function(){
         $('#accordion').accordion({
             heightStyle: "fill"
         });
+        $("h3").addClass("flex-row").addClass("flex-space");
+        $("#ui-id-1").append("<div id=\"coreHeader\"></div>");
+        $("#ui-id-3").append("<div id=\"electiveHeader\"></div>");
+        $("#ui-id-5").append("<div id=\"cognateHeader\"></div>");
+        let count = 0;
+        let requirementNum = 0;
+        for(let i in req.categories){
+            for(let j in req.categories[i].courses){
+                if(currentCourses.indexOf(req.categories[i].courses[j]) == -1){
+                    count++;
+                }
+            }
+            if(requirementNum == 0){
+                if(count != 0){
+                    $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                }else{
+                    $("#coreHeader").html("");
+                }
+            }else if(requirementNum == 1){
+                if(count != 0){
+                    $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                }else{
+                    $("#electiveHeader").html("");
+                }
+            }else if(requirementNum == 2){
+                if(count != 0){
+                    $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                }else{
+                    $("#cognateHeader").html("");
+                }
+            }
+            count = 0;
+            requirementNum++;
+        }
     });
 };
 
 
-window.makePlan = function(){
-    // planRefresh = createRequest();
-    // if(planRefresh) {
-    //     planRefresh.open("GET", "/~steptoe/TermProject/php/functions.php?refresh=true", true);
-    //     planRefresh.onreadystatechange = refreshButton;
-    //     planRefresh.send(null);
-    // }
+window.makePlan = function(location){
+    console.log(location);
 
-    console.log("hi");
-    $.get("/plans/1.json").done(function(data){
+    $.get(location + ".json").done(function(data){
         console.log(data);
         let combined  = data;
         plan = combined.plan;
         catalog = combined.catalog;
+        currentCourses = [];
+        for (let c in plan.courses){
+            currentCourses.push(c);
+        }
         if(first){
             first = false;
             let courses = [];
@@ -74,27 +106,97 @@ window.makePlan = function(){
                 "scrollCollapse": false
             });
             $("#table tr").attr("ondragstart", "dragFromCatalog(event)").attr("draggable", "true");
+            $(".top").addClass("flex-row flex-space");
             console.log("getting reqs");
-            getReqs();
+            getReqs(location);
+        }else{
+            let count = 0;
+            let requirementNum = 0;
+            for(let i in req.categories){
+                for(let j in req.categories[i].courses){
+                    if(currentCourses.indexOf(req.categories[i].courses[j]) == -1){
+                        count++;
+                    }
+                }
+                if(requirementNum == 0){
+                    if(count != 0){
+                        $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                    }else{
+                        $("#coreHeader").html("");
+                    }
+                }else if(requirementNum == 1){
+                    if(count != 0){
+                        $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                    }else{
+                        $("#electiveHeader").html("");
+                    }
+                }else if(requirementNum == 2){
+                    if(count != 0){
+                        $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+                    }else{
+                        $("#cognateHeader").html("");
+                    }
+                }
+                count = 0;
+                requirementNum++;
+            }
         }
         currPlan = new Plan(plan.name, catalog.year, plan.major, plan.student, plan.currYear, plan.currTerm, plan.realName);
 
         for (let c in plan.courses){
+            currentCourses.push(c);
             currPlan.addCourse(plan.courses[c].id, catalog.courses[c].name, plan.courses[c].term, plan.courses[c].year, catalog.courses[c].credits);
         }
         currPlan.convertPlan();
         $('#planArea').html(currPlan.makeHTML());
         $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
     });
-}
+};
 
-window.refreshButton = function() {
-    if(planRefresh.readyState == 4){
-        $("#planChooser").html(planRefresh.responseText);
-        planRefresh = null;
+function updatePlan(){
+    let classes = $("#coreHeader")[0].parentElement.parentElement.children[1].children[0].children;
+    let count = 0;
+    for (let i in classes){
+        if(classes[i].className == "notInPlan"){
+            count++;
+        }
     }
-}
+    if(count != 0){
+        $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+    }else{
+        $("#coreHeader").html("");
+    }
 
+    classes = $("#electiveHeader")[0].parentElement.parentElement.children[3].children[0].children;
+    count = 0;
+    for (let i in classes){
+        if(classes[i].className == "notInPlan"){
+            count++;
+        }
+    }
+    if(count != 0){
+        $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+    }else{
+        $("#electiveHeader").html("");
+    }
+
+    classes = $("#cognateHeader")[0].parentElement.parentElement.children[5].children[0].children;
+    count = 0;
+    for (let i in classes){
+        if(classes[i].className == "notInPlan"){
+            count++;
+        }
+    }
+    if(count != 0){
+        $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+    }else{
+        $("#cognateHeader").html("");
+    }
+
+    currPlan.convertPlan();
+    $('#planArea').html(currPlan.makeHTML());
+    $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
+}
 
 class Plan {
     constructor(name, catalogYear, major, studentName, currYear, currTerm, realName) {
@@ -115,7 +217,11 @@ class Plan {
             this.courses[id] = new Course(id, name, term, year, credits);
         }
     }
+    removeCourse(id){
+        delete this.courses[id];
+    }
     convertPlan(){
+        this.years = {};
         for (var i = 0; i < 4; i++) {
             this.years[parseInt(this.catalogYear) + i] = new Year(parseInt(this.catalogYear) + i);
         }
@@ -163,7 +269,7 @@ class Plan {
                 html += "<div class=\"semester-header flex-row flex-space bold\"><div class=\"semester-title\">" + term.name + "</div><div class=\"semester-hours\">Hours: " + term.credits + "</div></div><div class=\"class-names\"><ul>";
                 for (let c in term.courses){
                     let course = term.courses[c];
-                    html += "<li draggable=\"true\" ondragstart=\"dragFromPlan(event)\">" + course.id + " " + course.name + "</li>";
+                    html += "<li draggable=\"true\" ondragstart=\"dragFromPlan(event)\" oncontextmenu=\"deleteCourse(event); return false;\">" + course.id + " " + course.name + "</li>";
                 }
                 html += "</ul></div></div>";
             }
@@ -182,6 +288,44 @@ class Plan {
         return total;
     }
 }
+window.deleteCourse = function(event){
+    event.preventDefault();
+    $(".inPlan").each(function() {
+        if(this.innerText.split(" ")[0] == event.target.innerHTML.split(" ")[0]){
+            this.className = "notInPlan";
+        }
+    });
+    //remove from current semester and plan
+    $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function() {
+        //makePlan(location.href);
+    });
+    currPlan.removeCourse(event.target.innerHTML.split(" ")[0]);
+    updatePlan();
+};
+
+window.signOut = function(){
+    $.ajax({
+    url: '/users/sign_out',
+    type: 'DELETE',
+    success: function(result) {
+        location = "/";
+    }
+});
+}
+
+window.dragOverOther = function(event){
+    let overSemester = false;
+    for (var i = 0; i < event.path.length; i++) {
+        if(event.path[i].className == "semester" || event.path[i].className == "semester past"){
+            overSemester = true;
+            break;
+        }
+    }
+    if (overSemester == false){
+        $(".semester").css("background", "");
+    }
+
+};
 
 class Course {
     constructor(id, name, term, year, credits){
@@ -216,63 +360,30 @@ class Term {
     }
 }
 
-window.createRequest  = function(){
-    let request = null;
-    if(window.XMLHttpRequest && !(window.ActiveXObject)) {
-        try {
-            request = new XMLHttpRequest();
-        }
-        catch(e) {
-            request = false;
-        }
-    }
-    else if (window.ActiveXObject) {
-        try {
-            request = new ActiveXObject("Msxml2.XMLHTTP");
-        }
-        catch(e) {
-            try {
-                request = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            catch(e) {request = false; }
-        }
-    }
-    return request;
-};
+
 
 window.dragFromPlan = function(event){
+    planEvent = event;
     $(".tempDrag").remove();
     // dragging from plan to somewhere
     makeDrag(event.target.innerHTML);
     courseName = event.target.innerHTML.split(" ")[0];
 
-    //remove from current semester and plan
-    if(courseRequest == null){
-        courseRequest = createRequest();
-        if(courseRequest){
-            let get = "/~steptoe/TermProject/php/functions.php?modify=delete&user=" + $("#studentUser")[0].innerHTML + "&plan=" + $("#planName")[0].innerHTML + "&course=" + event.target.innerHTML.split(" ")[0];
-            courseRequest.open("GET", get, true);
-            courseRequest.onreadystatechange = updatedCourse;
-            courseRequest.send(null);
-        }
-    }
-}
+};
 
 window.dragFromRequirements = function(event) {
     $(".tempDrag").remove();
     //dragging from left side
     makeDrag(event.target.innerHTML.replace(" - ", " "));
     courseName = event.target.innerHTML.replace(" - ", " ").split(" ")[0];
-}
+};
 
 window.dragFromCatalog = function(event) {
     $(".tempDrag").remove();
     //drag from catalog
     makeDrag(event.target.cells[0].innerHTML + " " + event.target.cells[1].innerHTML);
     courseName = event.target.cells[0].innerHTML;
-
-
-}
+};
 
 window.dragOver = function(event){
     //dragging over semester
@@ -284,7 +395,7 @@ window.dragOver = function(event){
             break;
         }
     }
-}
+};
 
 window.dropOnPlan = function(event) {
     event.preventDefault();
@@ -299,39 +410,53 @@ window.dropOnPlan = function(event) {
         }
     }
     // dropping on semester
-    if(courseRequest == null){
-        courseRequest = createRequest();
-        if(courseRequest){
-            let get = "/~steptoe/TermProject/php/functions.php?modify=add&user=" + $("#studentUser")[0].innerHTML + "&plan=" + $("#planName")[0].innerHTML + "&course=" + courseName + "&year=" + year + "&semester=" + semester;
-            console.log(get);
-            courseRequest.open("GET", get, true);
-            courseRequest.onreadystatechange = updatedCourse;
-            courseRequest.send(null);
+
+
+
+
+
+    if(planEvent != null){
+        currPlan.removeCourse(courseName);
+        courseName = planEvent.target.innerHTML.split(" ")[0];
+        $(".inPlan").each(function() {
+            if(this.innerText.split(" ")[0] == planEvent.target.innerHTML.split(" ")[0]){
+                this.className = "notInPlan";
+            }
+        });
+        //remove from current semester and plan
+        $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: planEvent.target.innerHTML.split(" ")[0]}, function() {
+            //makePlan(location.href);
+        });
+        planEvent = null;
+    }else{
+        if(currPlan.courses[courseName] != null){
+            currPlan.removeCourse(courseName);
+            $(".inPlan").each(function() {
+                if(this.innerText.split(" ")[0] == courseName){
+                    this.className = "notInPlan";
+                }
+            });
+            //remove from current semester and plan
+            $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName}, function() {
+                //makePlan(location.href);
+            });
         }
     }
 
-}
-
-window.dragOverOther = function(event){
-    let overSemester = false;
-    for (var i = 0; i < event.path.length; i++) {
-        if(event.path[i].className == "semester" || event.path[i].className == "semester past"){
-            overSemester = true;
-            break;
+    $(".notInPlan").each(function() {
+        if(this.innerText.split(" ")[0] == courseName){
+            this.className = "inPlan";
         }
-    }
-    if (overSemester == false){
-        $(".semester").css("background", "");
-    }
+    });
 
-}
+    $.post("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName, year: year, semester: semester}, function(){
+        //makePlan(location.href);
+    });
 
-window.updatedCourse = function() {
-    if(courseRequest.readyState == 4){
-        makePlan();
-        courseRequest = null;
-    }
-}
+    currPlan.addCourse(courseName, catalog.courses[courseName].name, semester, year, catalog.courses[courseName].credits);
+    updatePlan();
+
+};
 
 
 window.makeDrag = function(str){
@@ -345,11 +470,8 @@ window.makeDrag = function(str){
     drag.style.border = "2px solid #50423d";
     document.body.appendChild(drag);
     event.dataTransfer.setDragImage(drag, drag.clientWidth / 2, drag.clientHeight + 4);
-}
+};
 
-window.dropPlans = function() {
-  document.getElementById("dropPlans").classList.toggle("show");
-}
 
 window.updateTicTacToe = function(event){
     if(event.target.classList.contains("filledIn")){
@@ -401,7 +523,7 @@ window.updateTicTacToe = function(event){
     } else{
         turn = "X";
     }
-}
+};
 
 window.boldWinners = function(i){
     switch (i) {
@@ -446,7 +568,7 @@ window.boldWinners = function(i){
             $("#ll").addClass("winningSquares");
             break;
     }
-}
+};
 
 window.resetTicTacToe = function(){
     $("#uc").removeClass("filledIn").removeClass("winningSquares").html("");
@@ -459,37 +581,4 @@ window.resetTicTacToe = function(){
     $("#lc").removeClass("filledIn").removeClass("winningSquares").html("");
     $("#lr").removeClass("filledIn").removeClass("winningSquares").html("");
     turn = "X";
-}
-
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
 };
-
-window.changePlan = function(event){
-  let newPlan = event.target.innerHTML;
-  planRequest = createRequest();
-  if(planRequest){
-      let get = "/~steptoe/TermProject/php/functions.php?newPlan=" + newPlan;
-      planRequest.open("GET", get, true);
-      planRequest.onreadystatechange = gotTemp;
-      planRequest.send(null);
-  }
-}
-
-
-window.gotTemp = function() {
-    if(planRequest.readyState == 4){
-        makePlan();
-
-        planRequest = null;
-    }
-}

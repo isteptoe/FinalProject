@@ -4,12 +4,19 @@ class PlansController < ApplicationController
   # GET /plans
   # GET /plans.json
   def index
-    @plans = Plan.where(user_id: current_user.id)
+    if current_user.realName == "Faculty" || current_user.realName == "Admin"
+        @plans = Plan.all
+    else
+        @plans = Plan.where(user_id: current_user.id)
+    end
   end
 
   # GET /plans/1
   # GET /plans/1.json
   def show
+      if @plan.user_id != current_user.id && current_user.realName != "Faculty" && current_user.realName != "Admin"
+          redirect_to plans_path
+      end
       @courses = Course.all
       @plans = Plan.where(user_id: current_user.id)
   end
@@ -28,6 +35,8 @@ class PlansController < ApplicationController
   def create
     @plan = Plan.new(plan_params)
     @plan.user_id = current_user.id
+    @plan.currYear = 2020
+    @plan.currTerm = "Spring"
 
     respond_to do |format|
       if @plan.save
@@ -72,6 +81,6 @@ class PlansController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def plan_params
-      params.require(:plan).permit(:name, :user_id)
+      params.require(:plan).permit(:name, :user_id, :major_id, :catalog_id)
     end
 end

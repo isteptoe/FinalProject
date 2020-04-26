@@ -9,6 +9,16 @@
   </div>
 
   <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :realName, autofocus: true, autocomplete: "login" %>
+  </div>
+
+  <div class="field">
+      <%= f.label :major %>
+      <%= f.collection_select :major_id, Major.order(:major),:id, :major, include_blank: true %>
+  </div>
+
+  <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>

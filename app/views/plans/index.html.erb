@@ -1,95 +1,36 @@
-<body class="flex-col" ondragover="dragOverOther(event)">
-    <div class="header flex-space">
-        <div class="left-header flex-center bold">ACADEMIC PLANNING</div>
-        <div class="right-header flex-row">
-            <div class="student-info flex-center">
-                <div class="top-info flex-row">
-                    <div class="info-titles flex-col bold">
-                        <div>Student: </div>
-                        <div>Catalog: </div>
-                    </div>
-                    <div class="info-pid flex-col">
-                        <div id="studentUser"></div>
-                        <div id="catalogYear"></div>
-                    </div>
-                </div>
-                <div class="top-info flex-row">
-                    <div class="info-titles flex-col bold">
-                        <div>Major: </div>
-                        <div>Plan : </div>
-                    </div>
-                    <div class="info-pid flex-col">
-                        <div id="major"></div>
-                        <div id="planName"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="nav flex-row flex-center">
-              <div class="dropdown" id="planChooser">
-
-            </div>
-          </div>
-        </div>
+<div class="header flex-space">
+    <div class="left-header flex-center bold">ACADEMIC PLANNING</div>
+    <div class="dropbtn" onclick="signOut()">Sign Out</div>
+</div>
+<p id="notice"><%= notice %></p>
+<div class="upper centerTop flex-col indexBody">
+    <div class="sub-header quad-header flex-row flex-center">
+        <div class="name">Plans</div>
     </div>
-    <div class="upper flex-row">
-        <div class="upper-left flex-col">
-            <div class="quad-header flex-center">Requirements</div>
-            <div class="quad-content">
-                <div id="accordion"></div>
-            </div>
-        </div>
-        <div class="upper-right flex-col">
-            <div class="quad-header flex-center">
-                <div class="spacer"></div>
-                <div class="name" id="student"></div>
-                <div class="hours" id="totalCredits"></div>
-            </div>
-            <div class="quad-content">
-                <div class="plan flex-col" id="planArea"></div>
-            </div>
-        </div>
-    </div>
-    <div class="lower flex-row">
-        <div class="lower-left flex-col">
-            <div class="quad-header flex-center">Tic-Tac-Toe</div>
-            <div class="quad-content flex-col flex-center">
-                <div class="ticRow flex-row flex-center">
-                    <div class="ticCol flex-center" id="ul" onclick="updateTicTacToe(event)"></div>
-                    <div class="ticCol flex-center" id="uc" onclick="updateTicTacToe(event)"></div>
-                    <div class="ticCol flex-center" id="ur" onclick="updateTicTacToe(event)"></div>
-                </div>
-                <div class="ticRow flex-row flex-center">
-                    <div class="ticCol flex-center" id="cl" onclick="updateTicTacToe(event)"></div>
-                    <div class="ticCol flex-center" id="cc" onclick="updateTicTacToe(event)"></div>
-                    <div class="ticCol flex-center" id="cr" onclick="updateTicTacToe(event)"></div>
-                </div>
-                <div class="ticRow flex-row flex-center">
-                    <div class="ticCol flex-center" id="ll" onclick="updateTicTacToe(event)"></div>
-                    <div class="ticCol flex-center" id="lc" onclick="updateTicTacToe(event)"></div>
-                    <div class="ticCol flex-center" id="lr" onclick="updateTicTacToe(event)"></div>
-                </div>
-            </div>
-            <div class="nav-button flex-center" onclick="resetTicTacToe()">Reset</div>
+    <div class="sub-content flex-center flex-col">
+        <table>
+          <thead>
+            <tr>
+              <th colspan="1">Name</th>
+              <th colspan="1">Plan</th>
+              <th colspan="1">Actions</th>
+            </tr>
+          </thead>
 
-
-        </div>
-        <div class="lower-right flex-col">
-            <div class="quad-header flex-center">Course Finder</div>
-            <div class="margin">
-                <table id="table">
-                    <thead>
-                        <tr>
-                            <th>Course</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Credits</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+          <tbody>
+            <% @plans.each do |plan| %>
+              <tr>
+                <td class="indexTable"><%= plan.user.realName %></td>
+                <td class="indexTable"><%= link_to plan.name, plan %></td>
+                <td class="indexTable">
+                    <%= link_to 'Edit', edit_plan_path(plan) %> &nbsp &nbsp &nbsp &nbsp &nbsp
+                    <%= link_to 'Destroy', plan, method: :delete, data: { confirm: 'Are you sure?' } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <br>
+        <%= link_to 'New Plan', new_plan_path %>
     </div>
-    <script>
-        makePlan();
-    </script>
-</body>
+</div>
