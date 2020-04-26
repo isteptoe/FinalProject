@@ -7,6 +7,7 @@ var first = true;
 var turn = "X";
 var win = [448, 56, 7, 292, 146, 73, 273, 84];
 var currentCourses = [];
+var planEvent = null;
 
 
 $(window).resize(function () {
@@ -152,6 +153,50 @@ window.makePlan = function(location){
     });
 };
 
+function updatePlan(){
+    let classes = $("#coreHeader")[0].parentElement.parentElement.children[1].children[0].children;
+    let count = 0;
+    for (let i in classes){
+        if(classes[i].className == "notInPlan"){
+            count++;
+        }
+    }
+    if(count != 0){
+        $("#coreHeader").html("<div class=\"missingClass\">" + count + "</div>");
+    }else{
+        $("#coreHeader").html("");
+    }
+
+    classes = $("#electiveHeader")[0].parentElement.parentElement.children[3].children[0].children;
+    count = 0;
+    for (let i in classes){
+        if(classes[i].className == "notInPlan"){
+            count++;
+        }
+    }
+    if(count != 0){
+        $("#electiveHeader").html("<div class=\"missingClass\">" + count + "</div>");
+    }else{
+        $("#electiveHeader").html("");
+    }
+
+    classes = $("#cognateHeader")[0].parentElement.parentElement.children[5].children[0].children;
+    count = 0;
+    for (let i in classes){
+        if(classes[i].className == "notInPlan"){
+            count++;
+        }
+    }
+    if(count != 0){
+        $("#cognateHeader").html("<div class=\"missingClass\">" + count + "</div>");
+    }else{
+        $("#cognateHeader").html("");
+    }
+
+    currPlan.convertPlan();
+    $('#planArea').html(currPlan.makeHTML());
+    $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
+}
 
 class Plan {
     constructor(name, catalogYear, major, studentName, currYear, currTerm, realName) {
@@ -172,7 +217,11 @@ class Plan {
             this.courses[id] = new Course(id, name, term, year, credits);
         }
     }
+    removeCourse(id){
+        delete this.courses[id];
+    }
     convertPlan(){
+        this.years = {};
         for (var i = 0; i < 4; i++) {
             this.years[parseInt(this.catalogYear) + i] = new Year(parseInt(this.catalogYear) + i);
         }
@@ -220,7 +269,7 @@ class Plan {
                 html += "<div class=\"semester-header flex-row flex-space bold\"><div class=\"semester-title\">" + term.name + "</div><div class=\"semester-hours\">Hours: " + term.credits + "</div></div><div class=\"class-names\"><ul>";
                 for (let c in term.courses){
                     let course = term.courses[c];
-                    html += "<li draggable=\"true\" ondragstart=\"dragFromPlan(event)\">" + course.id + " " + course.name + "</li>";
+                    html += "<li draggable=\"true\" ondragstart=\"dragFromPlan(event)\" oncontextmenu=\"deleteCourse(event); return false;\">" + course.id + " " + course.name + "</li>";
                 }
                 html += "</ul></div></div>";
             }
@@ -239,6 +288,44 @@ class Plan {
         return total;
     }
 }
+window.deleteCourse = function(event){
+    event.preventDefault();
+    $(".inPlan").each(function() {
+        if(this.innerText.split(" ")[0] == event.target.innerHTML.split(" ")[0]){
+            this.className = "notInPlan";
+        }
+    });
+    //remove from current semester and plan
+    $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function() {
+        //makePlan(location.href);
+    });
+    currPlan.removeCourse(event.target.innerHTML.split(" ")[0]);
+    updatePlan();
+};
+
+window.signOut = function(){
+    $.ajax({
+    url: '/users/sign_out',
+    type: 'DELETE',
+    success: function(result) {
+        location = "/";
+    }
+});
+}
+
+window.dragOverOther = function(event){
+    let overSemester = false;
+    for (var i = 0; i < event.path.length; i++) {
+        if(event.path[i].className == "semester" || event.path[i].className == "semester past"){
+            overSemester = true;
+            break;
+        }
+    }
+    if (overSemester == false){
+        $(".semester").css("background", "");
+    }
+
+};
 
 class Course {
     constructor(id, name, term, year, credits){
@@ -276,19 +363,12 @@ class Term {
 
 
 window.dragFromPlan = function(event){
+    planEvent = event;
     $(".tempDrag").remove();
     // dragging from plan to somewhere
     makeDrag(event.target.innerHTML);
     courseName = event.target.innerHTML.split(" ")[0];
-    $(".inPlan").each(function() {
-        if(this.innerText.split(" ")[0] == event.target.innerHTML.split(" ")[0]){
-            this.className = "notInPlan";
-        }
-    });
-    //remove from current semester and plan
-    $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: event.target.innerHTML.split(" ")[0]}, function() {
-        //makePlan(location.href);
-    });
+
 };
 
 window.dragFromRequirements = function(event) {
@@ -330,6 +410,39 @@ window.dropOnPlan = function(event) {
         }
     }
     // dropping on semester
+
+
+
+
+
+    if(planEvent != null){
+        currPlan.removeCourse(courseName);
+        courseName = planEvent.target.innerHTML.split(" ")[0];
+        $(".inPlan").each(function() {
+            if(this.innerText.split(" ")[0] == planEvent.target.innerHTML.split(" ")[0]){
+                this.className = "notInPlan";
+            }
+        });
+        //remove from current semester and plan
+        $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: planEvent.target.innerHTML.split(" ")[0]}, function() {
+            //makePlan(location.href);
+        });
+        planEvent = null;
+    }else{
+        if(currPlan.courses[courseName] != null){
+            currPlan.removeCourse(courseName);
+            $(".inPlan").each(function() {
+                if(this.innerText.split(" ")[0] == courseName){
+                    this.className = "notInPlan";
+                }
+            });
+            //remove from current semester and plan
+            $.get("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName}, function() {
+                //makePlan(location.href);
+            });
+        }
+    }
+
     $(".notInPlan").each(function() {
         if(this.innerText.split(" ")[0] == courseName){
             this.className = "inPlan";
@@ -337,22 +450,11 @@ window.dropOnPlan = function(event) {
     });
 
     $.post("/plan_courses", {user: $("#studentUser")[0].innerHTML, plan: $("#planName")[0].innerHTML, course: courseName, year: year, semester: semester}, function(){
-        makePlan(location.href);
+        //makePlan(location.href);
     });
 
-};
-
-window.dragOverOther = function(event){
-    let overSemester = false;
-    for (var i = 0; i < event.path.length; i++) {
-        if(event.path[i].className == "semester" || event.path[i].className == "semester past"){
-            overSemester = true;
-            break;
-        }
-    }
-    if (overSemester == false){
-        $(".semester").css("background", "");
-    }
+    currPlan.addCourse(courseName, catalog.courses[courseName].name, semester, year, catalog.courses[courseName].credits);
+    updatePlan();
 
 };
 
