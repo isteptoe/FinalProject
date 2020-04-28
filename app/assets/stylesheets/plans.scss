@@ -253,6 +253,7 @@ table.dataTable tbody th, table.dataTable tbody td, table.dataTable thead th {
   z-index: 1;
 }
 
+
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
@@ -269,6 +270,12 @@ table.dataTable tbody th, table.dataTable tbody td, table.dataTable thead th {
     margin: 5px;
 }
 .hours {
+    margin: 5px;
+    text-align: right;
+    flex: 1;
+    white-space: nowrap;
+}
+.name {
     margin: 5px;
     text-align: right;
     flex: 1;
