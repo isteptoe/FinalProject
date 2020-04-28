@@ -107,6 +107,7 @@ window.makePlan = function(location){
             });
             $("#table tr").attr("ondragstart", "dragFromCatalog(event)").attr("draggable", "true");
             $(".top").addClass("flex-row flex-space");
+
             console.log("getting reqs");
             getReqs(location);
         }else{
@@ -148,6 +149,11 @@ window.makePlan = function(location){
             currPlan.addCourse(plan.courses[c].id, catalog.courses[c].name, plan.courses[c].term, plan.courses[c].year, catalog.courses[c].credits);
         }
         currPlan.convertPlan();
+        $("#major").on("click", function(){
+            currPlan.addYear();
+            currPlan.convertPlan();
+            $('#planArea').html(currPlan.makeHTML());
+        })
         $('#planArea').html(currPlan.makeHTML());
         $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
     });
@@ -209,6 +215,7 @@ class Plan {
         this.realName = realName;
         this.courses = {};
         this.years = {};
+        this.yearNum = 4;
     }
     addCourse(id, name, term, year, credits){
         if (term == "Fall") {
@@ -222,7 +229,7 @@ class Plan {
     }
     convertPlan(){
         this.years = {};
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < this.yearNum; i++) {
             this.years[parseInt(this.catalogYear) + i] = new Year(parseInt(this.catalogYear) + i);
         }
         for (let c in this.courses) {
@@ -234,6 +241,22 @@ class Plan {
             }
             let schoolYear = this.years[year];
             schoolYear.addCourse(course);
+        }
+    }
+    addYear(){
+        this.yearNum++;
+    }
+    removeYear(){
+        let year = 0;
+        for(let y in this.years){
+            year = parseInt(y);
+        }
+        if(this.years[year].Fall.courses.length != 0 || this.years[year].Spring.courses.length != 0 || this.years[year].Summer.courses.length != 0){
+            alert("Year must be empty before removing");
+        }else if(this.yearNum == 4){
+            alert("Four years must be present");
+        }else{
+            this.yearNum--;
         }
     }
     makeHTML(){
@@ -303,15 +326,27 @@ window.deleteCourse = function(event){
     updatePlan();
 };
 
+window.addYears = function(){
+    currPlan.addYear();
+    currPlan.convertPlan();
+    $('#planArea').html(currPlan.makeHTML());
+}
+
+window.removeYears = function(){
+    currPlan.removeYear();
+    currPlan.convertPlan();
+    $('#planArea').html(currPlan.makeHTML());
+}
+
 window.signOut = function(){
     $.ajax({
-    url: '/users/sign_out',
-    type: 'DELETE',
-    success: function(result) {
-        location = "/";
-    }
-});
-}
+        url: '/users/sign_out',
+        type: 'DELETE',
+        success: function(result) {
+            location = "/";
+        }
+    });
+};
 
 window.dragOverOther = function(event){
     let overSemester = false;
