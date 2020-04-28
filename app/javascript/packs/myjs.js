@@ -149,11 +149,6 @@ window.makePlan = function(location){
             currPlan.addCourse(plan.courses[c].id, catalog.courses[c].name, plan.courses[c].term, plan.courses[c].year, catalog.courses[c].credits);
         }
         currPlan.convertPlan();
-        $("#major").on("click", function(){
-            currPlan.addYear();
-            currPlan.convertPlan();
-            $('#planArea').html(currPlan.makeHTML());
-        })
         $('#planArea').html(currPlan.makeHTML());
         $('#totalCredits').html("Hours: " + currPlan.getTotalHours());
     });
@@ -330,13 +325,13 @@ window.addYears = function(){
     currPlan.addYear();
     currPlan.convertPlan();
     $('#planArea').html(currPlan.makeHTML());
-}
+};
 
 window.removeYears = function(){
     currPlan.removeYear();
     currPlan.convertPlan();
     $('#planArea').html(currPlan.makeHTML());
-}
+};
 
 window.signOut = function(){
     $.ajax({
